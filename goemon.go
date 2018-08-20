@@ -1,9 +1,11 @@
 package goemon
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 type (
@@ -71,6 +73,17 @@ func (g *GOEMON) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if handler := node.methods[req.Method]; handler != nil {
 		handler(w, req, params)
 	}
+}
+
+func (g *GOEMON) Start(port int) error {
+	portString := fmt.Sprintf(":%d", port)
+	server := &http.Server{
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		Addr:         portString,
+		Handler:      g,
+	}
+	return server.ListenAndServe()
 }
 
 func (n *node) Add(method, path string, handler Handle) {
