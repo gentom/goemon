@@ -25,6 +25,14 @@ type (
 	Handle func(http.ResponseWriter, *http.Request, url.Values)
 )
 
+// HTTP methods
+const (
+	DELETE = "DELETE"
+	GET    = "GET"
+	POST   = "POST"
+	PUT    = "PUT"
+)
+
 func New() (g *GOEMON) {
 	g = &GOEMON{}
 	g.router = NewRouter()
@@ -38,6 +46,22 @@ func NewRouter() *Router {
 		methods:      make(map[string]Handle),
 	}
 	return &Router{tree: &node}
+}
+
+func (g *GOEMON) GET(path string, handler Handle) {
+	g.router.tree.Add(GET, path, handler)
+}
+
+func (g *GOEMON) POST(path string, handler Handle) {
+	g.router.tree.Add(POST, path, handler)
+}
+
+func (g *GOEMON) PUT(path string, handler Handle) {
+	g.router.tree.Add(PUT, path, handler)
+}
+
+func (g *GOEMON) DELETE(path string, handler Handle) {
+	g.router.tree.Add(DELETE, path, handler)
 }
 
 func (n *node) Add(method, path string, handler Handle) {
