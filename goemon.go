@@ -23,3 +23,8 @@ type (
 
 	Handle func(http.ResponseWriter, *http.Request, url.Values)
 )
+
+func New() (g *GOEMON) {
+	g = &GOEMON{}
+	return g
+}
