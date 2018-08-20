@@ -64,6 +64,15 @@ func (g *GOEMON) DELETE(path string, handler Handle) {
 	g.router.tree.Add(DELETE, path, handler)
 }
 
+func (g *GOEMON) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+	params := req.Form
+	node, _ := g.router.tree.traverse(strings.Split(req.URL.Path, "/")[1:], params)
+	if handler := node.methods[req.Method]; handler != nil {
+		handler(w, req, params)
+	}
+}
+
 func (n *node) Add(method, path string, handler Handle) {
 	if path == "" {
 		panic("Path cannot be empty")
