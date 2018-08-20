@@ -26,5 +26,15 @@ type (
 
 func New() (g *GOEMON) {
 	g = &GOEMON{}
+	g.router = NewRouter()
 	return g
+}
+
+func NewRouter() *Router {
+	node := node{
+		component:    "/",
+		isNamedParam: false,
+		methods:      make(map[string]Handle),
+	}
+	return &Router{tree: &node}
 }
