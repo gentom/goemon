@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/url"
 
-	goemon "github.com/gentom/Goemon"
+	goemon "github.com/gentom/goemon"
 )
 
 func main() {
