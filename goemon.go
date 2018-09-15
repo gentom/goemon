@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	GOEMON struct {
+	Goemon struct {
 		router *Router
 	}
 
@@ -24,29 +24,29 @@ const (
 	PUT    = "PUT"
 )
 
-func New() (g *GOEMON) {
-	g = &GOEMON{}
+func New() (g *Goemon) {
+	g = &Goemon{}
 	g.router = NewRouter()
 	return g
 }
 
-func (g *GOEMON) GET(path string, handler Handle) {
+func (g *Goemon) GET(path string, handler Handle) {
 	g.router.tree.Add(GET, path, handler)
 }
 
-func (g *GOEMON) POST(path string, handler Handle) {
+func (g *Goemon) POST(path string, handler Handle) {
 	g.router.tree.Add(POST, path, handler)
 }
 
-func (g *GOEMON) PUT(path string, handler Handle) {
+func (g *Goemon) PUT(path string, handler Handle) {
 	g.router.tree.Add(PUT, path, handler)
 }
 
-func (g *GOEMON) DELETE(path string, handler Handle) {
+func (g *Goemon) DELETE(path string, handler Handle) {
 	g.router.tree.Add(DELETE, path, handler)
 }
 
-func (g *GOEMON) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (g *Goemon) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	params := req.Form
 	node, _ := g.router.tree.traverse(strings.Split(req.URL.Path, "/")[1:], params)
@@ -55,7 +55,7 @@ func (g *GOEMON) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (g *GOEMON) Start(port int) error {
+func (g *Goemon) Start(port int) error {
 	portString := fmt.Sprintf(":%d", port)
 	server := &http.Server{
 		ReadTimeout:  10 * time.Second,
